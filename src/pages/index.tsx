@@ -49,6 +49,7 @@ const Home: NextPage = () => {
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
             </p>
             <AuthShowcase />
+            <Main />
           </div>
         </div>
       </main>
@@ -81,3 +82,15 @@ const AuthShowcase: React.FC = () => {
     </div>
   );
 };
+
+const Main: React.FC = () => {
+const {data: sessionData} = useSession();
+
+
+  return (
+    <div>
+
+    </div>
+  )
+}
+
