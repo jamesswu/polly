@@ -72,10 +72,10 @@ model Question {
     endsAt    DateTime?
     question  String    @db.VarChar(5000)
     options   Json
-    Vote      Vote[]
+    Answer    Answer[]
 }
 
-model Vote {
+model Answer {
     id         String   @id @default(cuid())
     createdAt  DateTime @default(now())
     choice     Int
