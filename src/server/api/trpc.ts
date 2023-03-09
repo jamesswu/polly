@@ -23,6 +23,7 @@ import { prisma } from "../db";
 
 type CreateContextOptions = {
   session: Session | null;
+  token: string;
 };
 
 /**
@@ -39,6 +40,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     prisma,
+    token: opts.token
   };
 };
 
@@ -53,9 +55,10 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
-
+  const token = req.cookies["poll-token"] as string;
   return createInnerTRPCContext({
     session,
+    token,
   });
 };
 

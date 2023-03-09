@@ -5,6 +5,31 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "../utils/api";
 
+// const AuthCompontent: React.FC = () => {
+//   const utils = api.useContext();
+//   const mutation = api.question.addQuestion.useMutation({
+//     onSettled: async () => {
+//       await utils.question.getAll.invalidate();
+//     }
+//   });
+  
+//   return (
+//     <div>
+//     <label className="text-white text-2xl mx-1" htmlFor="">Question:</label>
+//     <input
+//       onKeyDown={(event) => {
+//         if (event.key === "Enter") {
+//           mutation.mutate({question: event.currentTarget.value});
+//           event.currentTarget.value = "";
+//         }
+//       }}
+//       ></input>
+//       </div>
+//   );
+// };
+
+
+
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
   const {data:questions } = api.question.getAll.useQuery(
@@ -25,8 +50,8 @@ const Home: NextPage = () => {
             Polly
           </h1>
           <div className="flex flex-col items-center gap-2">
-            {sessionData && <AuthCompontent />}
-            {sessionData && questions && questions.map( question => {
+            {/* {sessionData && <AuthCompontent />} */}
+            {/* {sessionData && questions && questions.map( question => {
               return (
                 <Link
                   key={question.id}
@@ -35,12 +60,35 @@ const Home: NextPage = () => {
                   {question.question} 
                 </Link>
               )
-            })}
+            })} */}
+            <header>
+              {
+                sessionData &&
+                <Link
+                href="/create"
+                className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20">
+                    Create New Poll
+                </Link>
+              }
+            </header>
+            <div className="grid grid-cols-1 gap-y-5 md:grid-cols-4 md:gap-x-5 mt-10">
+            {
+              sessionData && questions && questions.map( question => {
+                return (
+                  <Link
+                    key={question.id}
+                    className="text-white text-2xl"
+                    href={`/question/${question.id}`}>
+                    {question.question} 
+                  </Link>
+                )
+              })
+            }
+            </div>
             <div className="flex flex-col items-center justify-center gap-4">
               <button
                 className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-                onClick={sessionData ? () => void signOut() : () => void signIn()}
-              >
+                onClick={sessionData ? () => void signOut() : () => void signIn()}>
                 {sessionData ? "Sign out" : "Sign in"}
               </button>
             </div>
@@ -52,27 +100,4 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-const AuthCompontent: React.FC = () => {
-  const utils = api.useContext();
-  const mutation = api.question.addQuestion.useMutation({
-    onSettled: async () => {
-      await utils.question.getAll.invalidate();
-    }
-  });
-  
-  return (
-    <div>
-    <label className="text-white text-2xl mx-1" htmlFor="">Question:</label>
-    <input
-      onKeyDown={(event) => {
-        if (event.key === "Enter") {
-          mutation.mutate({question: event.currentTarget.value});
-          event.currentTarget.value = "";
-        }
-      }}
-      ></input>
-      </div>
-  );
-};
 
