@@ -21,9 +21,6 @@ export default function Question() {
           <p>the question is: {sessionData && <span>{question.data?.question}</span>}</p>
         </div>
         <div>
-          {
-            
-          }
         </div>
       </main>
     </>
